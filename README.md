@@ -1,5 +1,7 @@
 # NexusVPN Desktop
 
+Is Not Ready Now You Have To What Next Update
+
 NexusVPN Desktop packages the existing dashboard as a Windows application. It does not create or host a VPN server, and the dashboard's Connect buttons do not establish a VPN tunnel. Downloaded `.ovpn` configurations require a compatible OpenVPN client and a reachable VPN Gate server.
 
 ## Build on Windows

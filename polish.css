@@ -1,0 +1,41 @@
+/* polish.css — layered over style.css */
+html { scroll-padding-top: 84px; }
+section { scroll-margin-top: 84px; }
+body { font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; border-radius: 6px; }
+.navbar { padding: 0 clamp(1rem, 4vw, 2.5rem); }
+.nav-link.active { color: var(--ink); }
+.nav-link.active::after { width: 100%; }
+.connection-badge { cursor: pointer; max-width: 220px; }
+.connection-badge .status-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.demo-note {
+  display: flex;
+  gap: .75rem;
+  align-items: flex-start;
+  max-width: 900px;
+  margin: 0 auto 1.5rem;
+  padding: .9rem 1.1rem;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-size: .88rem;
+}
+.code-card.is-demo { opacity: .85; }
+.code-card.is-demo .card-top::after {
+  content: "Sample";
+  font-size: .7rem;
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 0 .5rem;
+  align-self: flex-start;
+}
+.vg-toolbar { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.vg-sort { background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-sm); padding: .6rem .9rem; font: inherit; font-size: .85rem; }
+.btn-retry { margin-top: 1rem; padding: .55rem 1.2rem; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--panel); color: var(--ink); cursor: pointer; }
+@media (max-width: 900px) {
+  .nav-links { display: flex; position: fixed; top: 68px; left: 0; right: 0; gap: 1.25rem; padding: .6rem 1rem; overflow-x: auto; background: var(--paper); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+  .nav-link { white-space: nowrap; }
+  .hero { padding-top: 8rem; }
+}

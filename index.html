@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusVPN — Military-Grade Global Protection</title>
+  <meta name="description" content="Connect to the world's fastest VPN servers across 190+ countries. NexusVPN delivers military-grade encryption with blazing speeds." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="polish.css" />
+</head>
+<body data-theme="dark">
+
+  <!-- ── NAVBAR ──────────────────────────────────────────────── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <div class="brand-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+          <path d="M12 2L4 6v6c0 5.5 3.5 10.7 8 12 4.5-1.3 8-6.5 8-12V6l-8-4z" fill="url(#brandGrad)" />
+          <path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="brandGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#00d4ff"/>
+              <stop offset="100%" stop-color="#7b2fff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <span class="brand-name">Nexus<span class="brand-accent">VPN</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#speedtest" class="nav-link">Speed Test</a>
+      <a href="#codes" class="nav-link" id="nav-codes">Sample Codes</a>
+      <a href="#protocols" class="nav-link">Protocols</a>
+      <a href="#windows" class="nav-link" id="nav-windows">Windows</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+    </div>
+    <div class="nav-actions">
+      <div class="connection-badge" id="connectionBadge">
+        <span class="status-dot"></span>
+        <span class="status-text">Not Connected</span>
+      </div>
+      <button class="btn-connect" id="btnConnect">View Configs</button>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        <span>Live IP check · Leak tests · Connection diagnostics</span>
+      </div>
+      <h1 class="hero-title">
+        Your Digital<br/>
+        <span class="gradient-text">Fortress</span><br/>
+        Everywhere
+      </h1>
+      <p class="hero-subtitle">See your public IP, test for WebRTC leaks, measure your real speed, and download working .ovpn configs from the VPN Gate project.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" id="btnExploreGlobe">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          Explore the Globe
+        </button>
+        <button class="btn-secondary" id="btnGetCodes">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          View Sample Configs
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-num" data-count="5400">0</span><span class="stat-unit">+</span>
+          <span class="stat-label">Servers</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="190">0</span><span class="stat-unit">+</span>
+          <span class="stat-label">Countries</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="99">0</span><span class="stat-unit">%</span>
+          <span class="stat-label">Uptime</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3D GLOBE -->
+    <div class="globe-container" id="globeContainer">
+      <canvas id="globeCanvas"></canvas>
+      <div class="globe-ring globe-ring-1"></div>
+      <div class="globe-ring globe-ring-2"></div>
+      <div class="globe-ring globe-ring-3"></div>
+      <div class="globe-tooltip" id="globeTooltip">
+        <span class="tooltip-flag" id="tooltipFlag"></span>
+        <span class="tooltip-name" id="tooltipName">Hover a country</span>
+      </div>
+    </div>
+
+    <!-- COUNTRY PANEL -->
+    <div class="country-panel" id="countryPanel">
+      <div class="panel-header">
+        <div class="panel-country-info">
+          <span class="panel-flag" id="panelFlag">🇺🇸</span>
+          <div>
+            <h3 class="panel-country-name" id="panelCountryName">United States</h3>
+            <span class="panel-region" id="panelRegion">North America</span>
+          </div>
+        </div>
+        <button class="panel-close" id="panelClose">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="panel-metrics">
+        <div class="metric-card">
+          <div class="metric-icon speed-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Download Speed</span>
+            <span class="metric-value" id="metricDownload">948 Mbps</span>
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill" id="fillDownload" style="width:94%"></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon upload-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 22L3 10h9l-1-8 10 12h-9l1 8z"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Upload Speed</span>
+            <span class="metric-value" id="metricUpload">512 Mbps</span>
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill upload-fill" id="fillUpload" style="width:51%"></div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon ping-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="metric-info">
+            <span class="metric-label">Ping Latency</span>
+            <span class="metric-value" id="metricPing">12 ms</span>
+          </div>
+          <div class="metric-bar">
+            <div class="metric-fill ping-fill" id="fillPing" style="width:15%"></div>
+          </div>
+        </div>
+
+        <div class="connections-grid">
+          <div class="conn-card">
+            <span class="conn-label">Server Load</span>
+            <span class="conn-value" id="connLoad">34%</span>
+          </div>
+          <div class="conn-card">
+            <span class="conn-label">Servers Online</span>
+            <span class="conn-value" id="connServers">42</span>
+          </div>
+          <div class="conn-card">
+            <span class="conn-label">Protocol</span>
+            <span class="conn-value">WireGuard</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-vpn-code">
+        <div class="code-header">
+          <span class="code-title">Windows VPN Config</span>
+          <button class="btn-copy" id="btnCopyCode">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copy
+          </button>
+        </div>
+        <pre class="code-block" id="codeBlock"></pre>
+      </div>
+
+      <button class="btn-connect-server" id="btnConnectServer">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.5 10.7 8 12 4.5-1.3 8-6.5 8-12V6l-8-4z"/></svg>
+        Connect to This Server
+      </button>
+    </div>
+  </section>
+
+  <!-- ── PROTECTION STATUS ─────────────────────────────────── -->
+  <section class="protection-section" id="protection">
+    <div class="section-header">
+      <span class="section-tag">Real-Time Analysis</span>
+      <h2 class="section-title">Your <span class="gradient-text">Protection</span> Status</h2>
+      <p class="section-sub">Live scan of your IP, WebRTC leaks, DNS leaks, and connection speed. No plugins needed.</p>
+    </div>
+    <div id="protectionSection"></div>
+  </section>
+
+  <!-- ── SPEED TEST SECTION ───────────────────────────────────── -->
+  <section class="speedtest-section" id="speedtest">
+    <div class="section-header">
+      <span class="section-tag">Connection Analysis</span>
+      <h2 class="section-title">Internet <span class="gradient-text">Speed Test</span></h2>
+      <p class="section-sub">Measure your real download, upload, and latency using Cloudflare's speed test network.</p>
+    </div>
+
+    <div class="st-wrapper">
+
+      <!-- Chart -->
+      <div class="st-chart-box">
+        <canvas id="stCanvas"></canvas>
+        <div class="st-legend-row">
+          <span class="st-leg-item" style="--c:#00d4ff">— Download</span>
+          <span class="st-leg-item" style="--c:#a78bff">— Upload</span>
+          <span class="st-leg-item" style="--c:#00ff88">— Ping</span>
+        </div>
+      </div>
+
+      <!-- Right panel -->
+      <div class="st-panel">
+
+        <!-- Metric cards -->
+        <div class="st-metric">
+          <div class="st-metric-top">
+            <span class="st-metric-icon" style="color:#00d4ff">⇓</span>
+            <div>
+              <div class="st-metric-label">Download</div>
+              <div class="st-metric-val" id="stDlVal">—</div>
+            </div>
+          </div>
+          <div class="st-bar-track"><div class="st-bar-fill" id="stDlBar" style="--color:#00d4ff;width:0%"></div></div>
+        </div>
+
+        <div class="st-metric">
+          <div class="st-metric-top">
+            <span class="st-metric-icon" style="color:#a78bff">⇑</span>
+            <div>
+              <div class="st-metric-label">Upload</div>
+              <div class="st-metric-val" id="stUlVal">—</div>
+            </div>
+          </div>
+          <div class="st-bar-track"><div class="st-bar-fill" id="stUlBar" style="--color:#a78bff;width:0%"></div></div>
+        </div>
+
+        <div class="st-metric">
+          <div class="st-metric-top">
+            <span class="st-metric-icon" style="color:#00ff88">⏱</span>
+            <div>
+              <div class="st-metric-label">Ping</div>
+              <div class="st-metric-val" id="stPingVal">—</div>
+            </div>
+          </div>
+          <div class="st-bar-track"><div class="st-bar-fill" id="stPingBar" style="--color:#00ff88;width:0%"></div></div>
+        </div>
+
+        <!-- Status -->
+        <div class="st-status" id="stStatus">Press the button to begin</div>
+
+        <!-- Button -->
+        <button class="btn-st-run" id="stBtnRun">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          Run Speed Test
+        </button>
+
+        <div class="st-note">Each test transfers about 14 MB through Cloudflare. Results measure your current connection, not a VPN tunnel.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── VPN CODES SECTION ──────────────────────────────────── -->
+  <section class="codes-section" id="codes">
+    <div class="section-header">
+      <span class="section-tag">Free Access</span>
+      <h2 class="section-title">Global VPN <span class="gradient-text">Codes</span></h2>
+      <p class="section-sub">Examples of how a config looks. These values are generated in your browser and will not connect to anything.</p>
+    </div>
+
+    <div class="filter-bar">
+      <input type="text" class="search-input" id="searchInput" placeholder="🔍  Search country or protocol..." />
+      <div class="filter-pills">
+        <button class="pill active" data-filter="all">All</button>
+        <button class="pill" data-filter="fast"> Fast</button>
+        <button class="pill" data-filter="free"> Free</button>
+        <button class="pill" data-filter="wireguard">WireGuard</button>
+        <button class="pill" data-filter="openvpn">OpenVPN</button>
+        <button class="pill" data-filter="north america"> Americas</button>
+        <button class="pill" data-filter="europe"> Europe</button>
+        <button class="pill" data-filter="asia"> Asia</button>
+        <button class="pill" data-filter="africa"> Africa</button>
+        <button class="pill" data-filter="oceania"> Oceania</button>
+        <button class="pill" data-filter="middle east"> Middle East</button>
+      </div>
+    </div>
+
+    <div class="codes-grid" id="codesGrid">
+      <!-- JS populated -->
+    </div>
+  </section>
+
+  <!-- ── WINDOWS SETUP ──────────────────────────────────────── -->
+  <section class="windows-section" id="windows">
+    <div class="section-header">
+      <span class="section-tag">Windows Guide</span>
+      <h2 class="section-title">Setup on <span class="gradient-text">Windows</span></h2>
+      <p class="section-sub">Connect in 60 seconds using Windows built-in VPN (IKEv2/L2TP) or install our NexusVPN client for one-click access.</p>
+    </div>
+
+    <div class="windows-layout">
+      <div class="steps-container">
+        <div class="step-card" id="step1">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Open Network Settings</h4>
+            <p>Press <kbd>Win + I</kbd>, go to <strong>Network & Internet → VPN</strong>, then click <strong>Add a VPN connection</strong>.</p>
+          </div>
+        </div>
+        <div class="step-card" id="step2">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>Enter Server Details</h4>
+            <p>Select <strong>Windows (built-in)</strong> as provider. Choose <strong>IKEv2</strong> as VPN type. Enter the server address from any code above.</p>
+          </div>
+        </div>
+        <div class="step-card" id="step3">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Enter Credentials</h4>
+            <p>Use the <strong>username</strong> and <strong>password</strong> from the VPN code card. Leave pre-shared key blank for IKEv2.</p>
+          </div>
+        </div>
+        <div class="step-card" id="step4">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <h4>Connect &amp; Verify</h4>
+            <p>Click <strong>Save</strong>, then select your new VPN in the VPN list and click <strong>Connect</strong>. Check your IP has changed at whatismyip.com.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="windows-code-panel">
+        <div class="win-code-header">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <span>PowerShell Quick Setup</span>
+        </div>
+        <pre class="win-code"><code id="psCode"># NexusVPN — Windows PowerShell Quick Setup
+# Run as Administrator
+
+$vpnName = "NexusVPN-US"
+$serverAddr = "us-nyc-01.nexusvpn.io"
+$pskKey = "NxV!2024#SecureKey"
+
+# Add VPN Connection
+Add-VpnConnection `
+  -Name $vpnName `
+  -ServerAddress $serverAddr `
+  -TunnelType "Ikev2" `
+  -EncryptionLevel "Maximum" `
+  -AuthenticationMethod "MSChapv2" `
+  -RememberCredential `
+  -PassThru
+
+# Set DNS for VPN
+Set-VpnConnectionIPsecConfiguration `
+  -ConnectionName $vpnName `
+  -AuthenticationTransformConstants SHA256128 `
+  -CipherTransformConstants AES256 `
+  -DHGroup Group14 `
+  -IntegrityCheckMethod SHA256 `
+  -PfsGroup None `
+  -EncryptionMethod AES256
+
+Write-Host "✅ NexusVPN configured successfully!" -ForegroundColor Green
+Write-Host "🔗 Connect: rasdial '$vpnName' vpnuser yourpassword"</code></pre>
+        <button class="btn-copy-ps" id="btnCopyPS">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy Script
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── LIVE STATS ─────────────────────────────────────────── -->
+  <section class="stats-section" id="stats">
+    <div class="stats-marquee-wrap">
+      <div class="stats-marquee" id="statsMarquee">
+        <!-- JS populated -->
+      </div>
+    </div>
+    <div class="global-stats-grid">
+      <div class="gstat-card">
+        <div class="gstat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#g1)" stroke-width="2"><defs><linearGradient id="g1" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7b2fff"/></linearGradient></defs><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="gstat-info">
+          <span class="gstat-num" id="gstatSpeed">10 Gbps</span>
+          <span class="gstat-label">Max Server Speed</span>
+        </div>
+      </div>
+      <div class="gstat-card">
+        <div class="gstat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#g3)" stroke-width="2"><defs><linearGradient id="g3" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7b2fff"/></linearGradient></defs><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="gstat-info">
+          <span class="gstat-num">AES-256</span>
+          <span class="gstat-label">Encryption Standard</span>
+        </div>
+      </div>
+      <div class="gstat-card">
+        <div class="gstat-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#g4)" stroke-width="2"><defs><linearGradient id="g4" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7b2fff"/></linearGradient></defs><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div class="gstat-info">
+          <span class="gstat-num">190+</span>
+          <span class="gstat-label">Countries</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FEATURES SECTION ────────────────────────────────────── -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <span class="section-tag">Why NexusVPN</span>
+      <h2 class="section-title">Everything You <span class="gradient-text">Need</span></h2>
+      <p class="section-sub">Enterprise-grade VPN technology made free and accessible to everyone on the planet.</p>
+    </div>
+    <div class="features-grid" id="featuresGrid">
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(0,212,255,.1);color:#00d4ff">🔒</div>
+        <h3>AES-256 Encryption</h3>
+        <p>Military-grade encryption that would take billions of years to crack with all the world's computers combined.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(0,255,136,.1);color:#00ff88">📋</div>
+        <h3>Zero Logs Policy</h3>
+        <p>We store absolutely nothing. No browsing history, no IP addresses, no connection timestamps. Ever.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(123,47,255,.1);color:#a78bff">⚡</div>
+        <h3>10 Gbps Servers</h3>
+        <p>Dedicated high-speed servers in tier-1 data centers. Stream 4K, game, and torrrent at full speed.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(255,204,0,.1);color:#ffcc00">🌍</div>
+        <h3>150+ Countries</h3>
+        <p>The world's largest free VPN network. Servers on every continent including Africa and Oceania.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(255,47,142,.1);color:#ff2f8e">🛡</div>
+        <h3>Kill Switch</h3>
+        <p>Automatically cuts internet if VPN drops — preventing any accidental IP or DNS leaks.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(0,212,255,.08);color:#00d4ff">📱</div>
+        <h3>All Platforms</h3>
+        <p>Windows, macOS, iOS, Android, Linux, routers. Configure once, use on unlimited devices.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(0,255,136,.08);color:#00ff88">🎯</div>
+        <h3>Split Tunneling</h3>
+        <p>Route only selected apps through the VPN while others use your regular internet connection.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(123,47,255,.08);color:#a78bff">🔄</div>
+        <h3>Auto-Reconnect</h3>
+        <p>IKEv2 and WireGuard automatically reconnect when switching between Wi-Fi and mobile data.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon" style="background:rgba(255,140,0,.1);color:#ff8c00">🚫</div>
+        <h3>Ad & Malware Block</h3>
+        <p>Built-in DNS-level blocking stops ads, trackers, and malicious domains before they load.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROTOCOLS SECTION ──────────────────────────────────────── -->
+  <section class="protocols-section" id="protocols">
+    <div class="section-header">
+      <span class="section-tag">Technology</span>
+      <h2 class="section-title">VPN <span class="gradient-text">Protocols</span></h2>
+      <p class="section-sub">Choose the right protocol for your use case. WireGuard for speed, OpenVPN for compatibility, IKEv2 for Windows.</p>
+    </div>
+    <div class="protocols-grid" id="protocolsGrid">
+      <!-- JS populated -->
+    </div>
+  </section>
+
+  <!-- ── FAQ SECTION ────────────────────────────────────────────── -->
+  <section class="faq-section" id="faq">
+    <div class="section-header">
+      <span class="section-tag">Help Center</span>
+      <h2 class="section-title">Frequently Asked <span class="gradient-text">Questions</span></h2>
+      <p class="section-sub">Everything you need to know about NexusVPN, protocols, and setup.</p>
+    </div>
+    <div class="faq-list" id="faqList">
+      <!-- JS populated -->
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5.5 3.5 10.7 8 12 4.5-1.3 8-6.5 8-12V6l-8-4z" fill="url(#footerGrad)"/><path d="M9 12l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><defs><linearGradient id="footerGrad" x1="4" y1="2" x2="20" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#7b2fff"/></linearGradient></defs></svg>
+      <span>NexusVPN</span>
+    </div>
+    <p class="footer-note">© 2024 NexusVPN · Free VPN services for educational purposes. Always respect local laws and regulations.</p>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f0" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+    <span id="toastMsg">Copied!</span>
+  </div>
+
+  <script src="globe.js"></script>
+  <script src="data.js"></script>
+  <script src="vpn-real.js"></script>
+  <script src="speedtest.js"></script>
+  <script src="app.js"></script>
+  <script src="practical.js"></script>
+</body>
+</html>
